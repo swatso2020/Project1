@@ -1,9 +1,9 @@
 # Project1
 
-Finance Apps
+Finance App
 
 
-Description
+App Description
 This app renders a dashboard of stock information based on user selection
 
 User Story
