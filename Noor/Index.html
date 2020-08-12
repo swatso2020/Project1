@@ -55,7 +55,7 @@
 var displayStocks=["AAPL","GOOGL","AMZN","MSFT","TSLA"]
 
 for (i=0;i<displayStocks.length;i++) {
-  var mainStockURL="https://cors-anywhere.herokuapp.com/https://marketdata.websol.barchart.com/getHistory.json?apikey=ab2b64de6529a58b22ffba3b8ceeee0d&symbol="+displayStocks[i]+"&type=minutes&startDate=20100101&maxRecords=10&interval=60&order=asc&sessionFilter=EFK&splits=true&dividends=true&volume=sum&nearby=1&jerq=true"
+  var mainStockURL="https://cors-anywhere.herokuapp.com/https://marketdata.websol.barchart.com/getHistory.json?apikey=247b0fb0737eb61a2ecf9faf065061e6&symbol="+displayStocks[i]+"&type=minutes&startDate=20100101&maxRecords=10&interval=60&order=asc&sessionFilter=EFK&splits=true&dividends=true&volume=sum&nearby=1&jerq=true"
 
 $.ajax({
      url: mainStockURL,
@@ -97,66 +97,79 @@ $.ajax({
    });
 }
 
-   
-   //ajax call for user searched stock
-   function userStock(symbol){
 
-    
-    var searchURL="https://cors-anywhere.herokuapp.com/https://marketdata.websol.barchart.com/getHistory.json?apikey=ab2b64de6529a58b22ffba3b8ceeee0d&symbol="+symbol+"&type=minutes&startDate=20100101&maxRecords=10&interval=60&order=asc&sessionFilter=EFK&splits=true&dividends=true&volume=sum&nearby=1&jerq=true"
+var searchURL= `https://sandbox.iexapis.com/stable/stock/AAPL/batch?types=quote,news,chart&range=1m&last=10&token=pk_04614b4f4d0b4656a4a8c98f8da321a6`
 
-// pulling information from barchart API
-    $.ajax({
+$.ajax({
      url: searchURL,
      method: "GET"
    }).then(function(response) {
        console.log(response);
-  showOnPage(symbol,response)
-    
+  
    });
+   //ajax call for user searched stock
    
-}
-//creating onclick so stocks will show when clicking submit
-$("#submitStock").on("click",function(){
-    event.preventDefault();
-    var stockName=$("#inputValue").val();
-    userStock(stockName);
-})
 
-//creating function to how searched stock
-function showOnPage(symbol, response) {
-
-  var userDiv=$("<div>")
-    userDiv.addClass("card")
     
-    // getting Name for user search
-  var userStockName = response.results[0].symbol;
-  var userSymbolP=$("<h5>").text(userStockName)
+//     var searchURL="https://cors-anywhere.herokuapp.com/https://marketdata.websol.barchart.com/getHistory.json?apikey=247b0fb0737eb61a2ecf9faf065061e6&symbol="+symbol+"&type=minutes&startDate=20100101&maxRecords=10&interval=60&order=asc&sessionFilter=EFK&splits=true&dividends=true&volume=sum&nearby=1&jerq=true"
 
-  //getting stock for user search
-  var userStockTime=response.results[0].timestamp
-  var userTimeP=$("<h6>").text(userStockTime)
+// // pulling information from barchart API
+//     $.ajax({
+//      url: searchURL,
+//      method: "GET"
+//    }).then(function(response) {
+//        console.log(response);
+//        var stockCall
+//   showOnPage(symbol,response)
+//     console.log(stockCall)
+//    });
+   
+// }
+// //creating onclick so stocks will show when clicking submit
+// $("#submitStock").on("click",function(){
+//     event.preventDefault();
+//     var stockName=$("#inputValue").val();
+//     userStock(stockName);
+    
+// })
 
-    //getting high for user search
+// //creating function to how searched stock
+// function showOnPage(symbol, response) {
 
-  var userStockHigh=response.results[0].high
-    var userHigh=$("<p>").text(userStockHigh)
+//   var userDiv=$("<div>")
+//     userDiv.addClass("card")
+    
+//     // getting Name for user search
+//   var userStockName = response.results[0].symbol;
+//   var userSymbolP=$("<h5>").text(userStockName)
 
-      //getting low for user search
+//   //getting stock for user search
+//   var userStockTime=response.results[0].timestamp
+//   var userTimeP=$("<h6>").text(userStockTime)
 
-    var userStockLow=response.results[0].low
-    var userLow=$("<p>").text(userStockLow)
-// getting open reults for user search
-      var userStockOpen=response.results[0].open
-      var userOpen=$("<p>").text(userStockOpen)
-// getting close results for user search
-      var userStockClose=response.results[0].close
-      var userClose=$("<p>").text(userStockClose)
+//     //getting high for user search
+
+//   var userStockHigh=response.results[0].high
+//     var userHigh=$("<p>").text(userStockHigh)
+
+//       //getting low for user search
+
+//     var userStockLow=response.results[0].low
+//     var userLow=$("<p>").text(userStockLow)
+// // getting open reults for user search
+//       var userStockOpen=response.results[0].open
+//       var userOpen=$("<p>").text(userStockOpen)
+// // getting close results for user search
+//       var userStockClose=response.results[0].close
+//       var userClose=$("<p>").text(userStockClose)
 
 
-  userDiv.append(userSymbolP,userTimeP,userHigh,userLow,userOpen,userClose)
-  $("#userDiv").append(userDiv)
+//   userDiv.append(userSymbolP,userTimeP,userHigh,userLow,userOpen,userClose)
+//   $("#userDiv").append(userDiv)
+//   stockCall=userStockName
+//   return stockCall
 
-}
+// }
 
 
 
