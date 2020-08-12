@@ -97,18 +97,51 @@ $.ajax({
    });
 }
 
-
-var searchURL= `https://sandbox.iexapis.com/stable/stock/AAPL/batch?types=quote,news,chart&range=1m&last=10&token=pk_04614b4f4d0b4656a4a8c98f8da321a6`
+function userStock(symbol) {
+var searchURL= "https://cloud.iexapis.com/stable/stock/"+symbol+"/quote?token=pk_04614b4f4d0b4656a4a8c98f8da321a6"
 
 $.ajax({
      url: searchURL,
      method: "GET"
    }).then(function(response) {
        console.log(response);
+       
+       var userDiv=$("<div>")
+   userDiv.addClass("card")
   
-   });
-   //ajax call for user searched stock
+  var userStockName = response.symbol;
+  var userSymbolP=$("<h5>").text(userStockName)
+  
+    var userStockTime=response.latestTime
+var userTimeP=$("<h6>").text(userStockTime)
+
+  var userStockHigh=response.week52High
+  var userHigh=$("<p>").text("High: "+userStockHigh)
+
+    var userStockLow=response.week52Low
+  var userLow=$("<p>").text("Low: "+userStockLow)
+
+    var userStockClose=response.iexClose
+  var userClose=$("<p>").text("Close: "+userStockClose)
+
+    userDiv.append(userSymbolP,userTimeP,userHigh,userLow,userClose)
+  $("#userDiv").append(userDiv)
    
+   });
+  }
+
+  //creating onclick so stocks will show when clicking submit
+$("#submitStock").on("click",function(){
+    event.preventDefault();
+    var stockName=$("#inputValue").val();
+    userStock(stockName);
+    
+ })
+
+   
+
+   //ajax call for user searched stock
+//    function userStock(symbol){
 
     
 //     var searchURL="https://cors-anywhere.herokuapp.com/https://marketdata.websol.barchart.com/getHistory.json?apikey=247b0fb0737eb61a2ecf9faf065061e6&symbol="+symbol+"&type=minutes&startDate=20100101&maxRecords=10&interval=60&order=asc&sessionFilter=EFK&splits=true&dividends=true&volume=sum&nearby=1&jerq=true"
