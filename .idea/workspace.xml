@@ -19,7 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bae4583-3065-4187-8750-70afc25b18dd" name="Default Changelist" comment="" />
+    <list default="true" id="1bae4583-3065-4187-8750-70afc25b18dd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Develop/Script.js" beforeDir="false" afterPath="$PROJECT_DIR$/Develop/Script.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -84,7 +87,7 @@
       <option name="presentableId" value="Default" />
       <updated>1596896455134</updated>
       <workItem from="1596896456426" duration="1084000" />
-      <workItem from="1597269515892" duration="28366000" />
+      <workItem from="1597269515892" duration="29043000" />
     </task>
     <servers />
   </component>
@@ -190,13 +193,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Develop/Script.js</url>
-          <line>177</line>
+          <line>172</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Develop/Script.js</url>
-          <line>88</line>
+          <line>83</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="7" />
         </line-breakpoint>
