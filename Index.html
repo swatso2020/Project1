@@ -14,23 +14,38 @@
     <title>Hello, world!</title>
 </head>
 <body>
-<dicv class="container-fluid">
+<div class="container-fluid">
     <h1 class>Hello, world!</h1>
+    <div class="row">
+        <div class="input-group col-4 mb-3">
+            <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username"
+                   id="inputText">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="searchBtn">Submit</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 m-3" id="stockButton">
+        </div>
+        <div class="col-8" id="stockInformation">
+        </div>
+    </div>
+    <div class="">
+        <table class="table table-hover">
+            <thead>
+            <tr class="row">
+                <th class="col-2 d-none d-sm-block">Date</th>
+                <th class="col-3 d-none d-sm-block">Headline</th>
+                <th class="col-7 d-none d-sm-block"> Summary</th>
 
-    <table class="table table-hover">
-        <thead>
-        <tr class="row">
-            <th class="col-2 d-none d-sm-block">Date</th>
-            <th class="col-3 d-none d-sm-block">Headline</th>
-            <th class="col-7 d-none d-sm-block"> Summary</th>
-
-        <tr class="row">
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</dicv>
-
+            <tr class="row">
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!-- JQuery uncompressed -->
