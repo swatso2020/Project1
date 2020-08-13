@@ -18,7 +18,7 @@ const ticker = [
     symbol: 'FB',
   },
   {
-    name: 'Nextflix',
+    name: 'Netflix',
     symbol: 'NFLX',
   },
   {
@@ -139,6 +139,19 @@ function generateButtons() {
   }
   divBody.append(list)
 }
+let searchBtn = $('#searchBtn');
+let saveBtn = $('#saveBtn');
+
+function search(){
+  let searchValue = $('#inputText').val()
+  newsIex(searchValue);
+  stockIex(searchValue);
+}
+searchBtn.click(search);
 
 generateButtons();
+
+function updateArray(){
+
+}
 
