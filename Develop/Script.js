@@ -40,6 +40,7 @@ const ticker = [
 
 ]
 
+let currentData
 
 // API Key
 
@@ -65,6 +66,7 @@ function stockIex(ticker) {
     url: stockQueryURL,
     method: "GET"
   }).then(function (response) {
+    currentData = response
     console.log(response);
     generateStock(response);
   });
@@ -79,6 +81,8 @@ function newsIex(ticker) {
     method: "GET"
   }).then(function (response) {
     generateNews(response);
+
+
   });
 }
 
@@ -139,19 +143,33 @@ function generateButtons() {
   }
   divBody.append(list)
 }
+
 let searchBtn = $('#searchBtn');
 let saveBtn = $('#saveBtn');
 
-function search(){
+function search() {
   let searchValue = $('#inputText').val()
   newsIex(searchValue);
   stockIex(searchValue);
 }
+
 searchBtn.click(search);
+saveBtn.click(updateArray);
 
 generateButtons();
 
-function updateArray(){
-
+function updateArray() {
+  let symbol = currentData.quote.symbol
+  let name = currentData.quote.companyName
+  let found = ticker.find(x => symbol === x.symbol);
+  if (found) return
+  found = {}
+  ticker.unshift(found);
+  found.symbol = symbol
+  found.name = name
+  if (ticker.length > 9) {
+    ticker.splice(ticker.length - 1, 1)
+  }
+  generateButtons()
 }
 
