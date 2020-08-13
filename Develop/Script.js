@@ -52,10 +52,10 @@ const newsCount = 10
 //Environments
 // const env = 'cloud'
 const env = 'sandbox'
-
-const newsQueryURL = `https://${env}.iexapis.com/stable/stock/${ticker[2]}/news/last/${newsCount}?token=${apiKey}`
-
-const stockQueryURL = `https://${env}.iexapis.com/stable/stock/${ticker[0]}/book?token=${apiKey}`
+//
+// const newsQueryURL = `https://${env}.iexapis.com/stable/stock/${ticker[2]}/news/last/${newsCount}?token=${apiKey}`
+//
+// const stockQueryURL = `https://${env}.iexapis.com/stable/stock/${ticker[0]}/book?token=${apiKey}`
 
 
 // pull stock from IEX api
@@ -121,6 +121,22 @@ function generateNews(data) {
 }
 
 function generateStock(data) {
+
+  let cardBody = $('#stockInfoCard')
+  cardBody.html('')
+  let stockName = $('<h5>');
+  stockName.text(data.quote.companyName);
+  let stockPrice = $('<h3>');
+  stockPrice.text(data.quote.latestPrice);
+  let primaryExchange = $('<div>');
+  primaryExchange.text('Exchange: ' + data.quote.primaryExchange);
+  let closetime = $('<div>')
+  let time = data.quote.closeTime
+  closetime.text('Closed: ' + moment(time).format('MMM DD, HH:mmA'))
+
+
+  cardBody.append(stockName, stockPrice, primaryExchange, closetime);
+
 
 }
 
