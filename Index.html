@@ -16,49 +16,50 @@
 <body>
 <div class="container-fluid">
     <h1 class>Hello, world!</h1>
-
-    <div class="container">
-        <div class="row" style="padding-bottom: 25px;">
-          <div class="col-sm-12" id="Dashboard"></div>
-          
+    <div class="row">
+        <div class="input-group col-4 mb-3">
+            <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username"
+                   id="inputText">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="searchBtn">Submit</button>
+            </div>
         </div>
-        
-      <div class="row">
-          <div class="col-sm-5">
-           <input type="text" id="inputValue" placeholder="Search for a stock...">
-           <input type="submit" id="submitStock" value="Submit"></input>
+    </div>
+    <div class="row">
+        <div class="col-4" id="stockButton">
+        </div>
+        <div class="col-8" id="stockInformation">
+            <div class="card" >
+                <div class="card-body row">
+                    <div class="col-4" id="stockInfoCard"></div>
+                    <div class= "col-8" id="chartDiv" style="width:50%; height:300px; margin:0 auto;"></div>
 
-           <div class="container-fluid"></div>
-          
-          <div class="user-stock">
-            <div id="userDiv">
-              <h4>Your Search</h4>
+                </div>
+                <button class="btn btn-outline-secondary" type="button" id="saveBtn">Save</button>
+
             </div>
-            <div id="savedStock">
-              <h4>Your Stocks</h4>
-            </div>
-          </div> 
-          
-          </div>
+        </div>
+    </div>
+    <div class="">
+        <table class="table table-hover">
+            <thead>
+            <tr class="row">
+                <th class="col-2 d-none d-sm-block">Date</th>
+                <th class="col-3 d-none d-sm-block">Headline</th>
+                <th class="col-7 d-none d-sm-block"> Summary</th>
 
-    <table class="table table-hover">
-        <thead>
-        <tr class="row">
-            <th class="col-2 d-none d-sm-block">Date</th>
-            <th class="col-3 d-none d-sm-block">Headline</th>
-            <th class="col-7 d-none d-sm-block"> Summary</th>
-
-        <tr class="row">
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</dicv>
-
+            <tr class="row">
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!-- JQuery uncompressed -->
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
         crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
@@ -69,19 +70,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
         integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
         crossorigin="anonymous"></script>
+<script src="https://code.jscharting.com/latest/jscharting.js"></script>
 <script src="./Develop/Script.js"></script>
-<script>
-  // const tickers = ['AAPL', 'MSFT', 'AMZN', 'FB', 'NFLX']
-  // const apiKey = 'Tpk_bea867523ec44739a110d4f47522beff'
-  // const queryURL = `https://sandbox.iexapis.com/stable/stock/${tickers[3]}/batch?types=quote,news,chart&range=1m&last=10&token=${apiKey}`
-  //
-  // $.ajax({
-  //   url: queryURL,
-  //   method: "GET"
-  // }).then(function(response) {
-  //   console.log(response);
-  //
-  // });
-</script>
 </body>
 </html>

@@ -1,190 +1,183 @@
+// Array for button
+// const ticker = ['AAPL', 'MSFT', 'AMZN', 'FB', 'NFLX', 'MCD', 'LMT', 'T', 'KO']
+const ticker = [
+  {
+    name: 'Apple',
+    symbol: 'AAPL',
+  },
+  {
+    name: 'Microsoft',
+    symbol: 'MSFT',
+  },
+  {
+    name: 'Amazon',
+    symbol: 'AMZN',
+  },
+  {
+    name: 'Facebook',
+    symbol: 'FB',
+  },
+  {
+    name: 'Netflix',
+    symbol: 'NFLX',
+  },
+  {
+    name: 'McDonald\'s',
+    symbol: 'MCD',
+  },
+  {
+    name: 'Disney',
+    symbol: 'DIS',
+  },
+  {
+    name: 'AT&T',
+    symbol: 'T',
+  },
+  {
+    name: 'Coco-Cola',
+    symbol: 'KO',
+  },
 
-var displayStocks=["AAPL","GOOGL","AMZN","MSFT","TSLA"]
+]
 
-for (i=0;i<displayStocks.length;i++) {
-  var mainStockURL="https://cors-anywhere.herokuapp.com/https://marketdata.websol.barchart.com/getHistory.json?apikey=ab2b64de6529a58b22ffba3b8ceeee0d&symbol="+displayStocks[i]+"&type=minutes&startDate=20100101&maxRecords=10&interval=60&order=asc&sessionFilter=EFK&splits=true&dividends=true&volume=sum&nearby=1&jerq=true"
+let currentData
 
-$.ajax({
-     url: mainStockURL,
-     method: "GET"
-   }).then(function(response) {
-       console.log(response);
-       
-       var stockDiv=$("<div>")
-       stockDiv.addClass("card")
-        //getting stock name
-        var stockName=response.results[i].symbol;
-        var symbolP = $("<h5>").text(stockName);
+// API Key
 
-          //getting stock time 
-          var stockTime=response.results[i].timestamp;
-          var timeP=$("<h6>").text(stockTime);
+// const apiKey = 'pk_7f795028e20d4cf2b689fb66874abd4f'
+const apiKey = 'Tsk_45ffeac63611476c81c288bde56d0f59'
 
-          //getting stock high
-          var stockHigh= response.results[i].high;
-          var highP= $("<p>").text("High: " + stockHigh);
+const newsCount = 10
 
-          // getting stock low
-          var stockLow= response.results[i].low;
-          var lowP=$("<p>").text("Low: " + stockLow);
+//Environments
+// const env = 'cloud'
+const env = 'sandbox'
+
+// pull stock from IEX api
+function stockIex(ticker) {
+  const stockQueryURL = `https://${env}.iexapis.com/stable/stock/${ticker}/book?token=${apiKey}`
+
+  $.ajax({
+    url: stockQueryURL,
+    method: "GET"
+  }).then(function (response) {
+    currentData = response
+    console.log(response);
+    generateStock(response);
+  });
+}
+
+// pull News from IEX Api.
+function newsIex(ticker) {
+  const newsQueryURL = `https://${env}.iexapis.com/stable/stock/${ticker}/news/last/${newsCount}?token=${apiKey}`
+
+  $.ajax({
+    url: newsQueryURL,
+    method: "GET"
+  }).then(function (response) {
+    generateNews(response);
+
+
+  });
+}
+
+function generateNews(data) {
+  data = data.filter(x => x.lang === 'en')
+  console.log(data);
+
+  let tbody = $('tbody')
+  tbody.html('')
 
             //getting stock open 
             var stockOpen=response.results[i].open;
             var openP=$("<p>").text("Open: " + stockOpen);
 
-            //getting stock close
-            var stockClose=response.results[i].close;
-            var closeP=$("<p>").text("Close: " + stockClose);
-
-         //appending data to stock div
-          stockDiv.append(symbolP, timeP, highP, lowP, openP, closeP);
-
-          $(".container-fluid").append(stockDiv)
-    
-   });
+    //createing elements
+    let tableRow = $('<tr>').addClass('row');
+    let tableDateTime = $('<td>').addClass('col-sm-2 col-12 font-weight-bold');
+    let tableHeadline = $('<td>').addClass('col-sm-3 col-12');
+    let tableHeadlineLink = $('<a>').attr('href', link).attr('target', '_blank').text(headline)
+    let tableSummary = $('<td>').addClass('col-sm-7 col-12');
+    //setting inner text to table
+    tableDateTime.text(date);
+    // tableHeadline.text(headline);
+    tableHeadline.append(tableHeadlineLink)
+    tableSummary.text(summary);
+    //appening to table row
+    tableRow.append(tableDateTime);
+    tableRow.append(tableHeadline);
+    tableRow.append(tableSummary);
+    //append to table body
+    tbody.append(tableRow);
+  }
 }
 
-   
-   //ajax call for user searched stock
-   function userStock(symbol){
+function generateStock(data) {
 
-    
-    var searchURL="https://cors-anywhere.herokuapp.com/https://marketdata.websol.barchart.com/getHistory.json?apikey=ab2b64de6529a58b22ffba3b8ceeee0d&symbol="+symbol+"&type=minutes&startDate=20100101&maxRecords=10&interval=60&order=asc&sessionFilter=EFK&splits=true&dividends=true&volume=sum&nearby=1&jerq=true"
+  let cardBody = $('#stockInfoCard')
+  cardBody.html('')
+  let stockName = $('<h5>');
+  stockName.text(data.quote.companyName);
+  let stockPrice = $('<h3>');
+  stockPrice.text(data.quote.latestPrice);
+  let primaryExchange = $('<div>');
+  primaryExchange.text('Exchange: ' + data.quote.primaryExchange);
+  let closetime = $('<div>')
+  let time = data.quote.closeTime
+  closetime.text('Closed: ' + moment(time).format('MMM DD, hh:mmA'))
 
 
+  cardBody.append(stockName, stockPrice, primaryExchange, closetime);
 
-// pulling information from barchart API
-    $.ajax({
-     url: searchURL,
-     method: "GET"
-   }).then(function(response) {
-       console.log(response);
-  showOnPage(symbol,response)
-  });
-   
+
 }
 
+function generateButtons() {
 
-var stockCaller
+  let divBody = $('#stockButton');
+  divBody.html('')
+  let list = $('<ul>').addClass('list-group list-group-horizontal row');
+  for (let i = 0; i < ticker.length; i++) {
+    let stockName = $('<li>').addClass('list-group-item border-left col-4');
+    stockName.text(ticker[i].name);
+    stockName.attr('data-symbol', ticker[i].symbol)
 
-//creating function to how searched stock
-function showOnPage(symbol, response) {
+    stockName.click(function () {
+      newsIex(this.dataset.symbol);
+      stockIex(this.dataset.symbol);
+    })
 
-  var userDiv=$("<div>")
-    userDiv.addClass("card")
-    
-    // getting Name for user search
-  var userStockName = response.results[0].symbol;
-  var userSymbolP=$("<h5>").text(userStockName)
+    list.append(stockName)
+  }
+  divBody.append(list)
+}
 
-  //getting stock for user search
-  var userStockTime=response.results[0].timestamp
-  var userTimeP=$("<h6>").text(userStockTime)
+let searchBtn = $('#searchBtn');
+let saveBtn = $('#saveBtn');
 
-    //getting high for user search
+function search() {
+  let searchValue = $('#inputText').val()
+  newsIex(searchValue);
+  stockIex(searchValue);
+}
 
-  var userStockHigh=response.results[0].high
-    var userHigh=$("<p>").text(userStockHigh)
+searchBtn.click(search);
+saveBtn.click(updateArray);
 
-      //getting low for user search
+generateButtons();
 
-    var userStockLow=response.results[0].low
-    var userLow=$("<p>").text(userStockLow)
-// getting open reults for user search
-      var userStockOpen=response.results[0].open
-      var userOpen=$("<p>").text(userStockOpen)
-// getting close results for user search
-      var userStockClose=response.results[0].close
-      var userClose=$("<p>").text(userStockClose)
+function updateArray() {
+  let symbol = currentData.quote.symbol
+  let name = currentData.quote.companyName
+  let found = ticker.find(x => symbol === x.symbol);
+  if (found) return
+  found = {}
+  ticker.unshift(found);
+  found.symbol = symbol
+  found.name = name
+  if (ticker.length > 9) {
+    ticker.splice(ticker.length - 1, 1)
+  }
+  generateButtons()
+}
 
-
-  userDiv.append(userSymbolP,userTimeP,userHigh,userLow,userOpen,userClose)
-  $("#userDiv").append(userDiv)
-
-  
-
-// stockCaller = response.results[0].symbol;
-// return symbol
- }
-
-
-//creating onclick so stocks will show when clicking submit
-$("#submitStock").on("click",function(){
-  event.preventDefault();
-  var stockName=$("#inputValue").val();
-  userStock(stockName);
-
-
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // Array for button
-// const tickers = ['AAPL', 'MSFT', 'AMZN', 'FB', 'NFLX']
-
-// // API Key
-// // const apiKey = 'pk_7f795028e20d4cf2b689fb66874abd4f'
-// const apiKey = 'Tsk_45ffeac63611476c81c288bde56d0f59'
-// const newsCount = 10
-// // const env = 'cloud'
-// const env = 'sandbox'
-// const newsQueryURL = `https://${env}.iexapis.com/stable/stock/${symbol}/news/last/${newsCount}?token=${apiKey}`
-
-
-// // pull News from IEX Api.
-// $.ajax({
-//   url: newsQueryURL,
-//   method: "GET"
-// }).then(function (response) {
-//   generateNews(response);
-
-// });
-
-// function generateNews(data) {
-//   data = data.filter(x => x.lang === 'en')
-//   console.log(data);
-
-//   let tbody = $('tbody')
-
-//   for (i = 0; i < data.length; i++) {
-//     let date = moment(data[i].datetime).format('MMM DD, YYYY @ HH:mm:ss');
-//     // let time = moment(data[i].datetime).format('HH:mm:ss');
-//     let headline = data[i].headline;
-//     let summary = data[i].summary;
-//     let link = data[i].url;
-
-//   //createing elements
-//     let tableRow = $('<tr>').addClass('row');
-//     let tableDateTime = $('<td>').addClass('col-sm-2 col-12 font-weight-bold');
-//     let tableHeadline = $('<td>').addClass('col-sm-3 col-12');
-//     let tableHeadlineLink = $('<a>').attr('href', link).attr('target', '_blank').text(headline)
-//     let tableSummary = $('<td>').addClass('col-sm-7 col-12');
-//   //setting inner text to table
-//     tableDateTime.text(date);
-//     // tableHeadline.text(headline);
-//     tableHeadline.append(tableHeadlineLink)
-//     tableSummary.text(summary);
-//   //appening to table row
-//     tableRow.append(tableDateTime);
-//     tableRow.append(tableHeadline);
-//     tableRow.append(tableSummary);
-//   //append to table body
-//     tbody.append(tableRow);
-
-
-//   }
-//   // let time = data.
-
-// }
