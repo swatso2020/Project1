@@ -30,7 +30,9 @@
         </div>
         <div class="col-8" id="stockInformation">
             <div class="card" >
-                <div class="card-body" id="stockInfoCard">
+                <div class="card-body row">
+                    <div class="col-4" id="stockInfoCard"></div>
+                    <div class= "col-8" id="chartDiv" style="width:50%; height:300px; margin:0 auto;"></div>
 
                 </div>
                 <button class="btn btn-outline-secondary" type="button" id="saveBtn">Save</button>
@@ -68,19 +70,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
         integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
         crossorigin="anonymous"></script>
+<script src="https://code.jscharting.com/latest/jscharting.js"></script>
 <script src="./Develop/Script.js"></script>
-<script>
-  // const tickers = ['AAPL', 'MSFT', 'AMZN', 'FB', 'NFLX']
-  // const apiKey = 'Tpk_bea867523ec44739a110d4f47522beff'
-  // const queryURL = `https://sandbox.iexapis.com/stable/stock/${tickers[3]}/batch?types=quote,news,chart&range=1m&last=10&token=${apiKey}`
-  //
-  // $.ajax({
-  //   url: queryURL,
-  //   method: "GET"
-  // }).then(function(response) {
-  //   console.log(response);
-  //
-  // });
-</script>
 </body>
 </html>
