@@ -43,10 +43,12 @@ const ticker = [
 let currentData
 
 // API Key
-
+//Prod
 // const apiKey = 'pk_7f795028e20d4cf2b689fb66874abd4f'
+// Sandbox
 const apiKey = 'Tsk_45ffeac63611476c81c288bde56d0f59'
 
+//count
 const newsCount = 10
 
 //Environments
@@ -76,9 +78,20 @@ function newsIex(ticker) {
     method: "GET"
   }).then(function (response) {
     generateNews(response);
-
-
   });
+}
+
+// pull chart from IEX Api
+function chartIex(ticker) {
+  const chartQueryURL = `https://${env}.iexapis.com/stable/stock/${ticker}/batch?types=quote,chart&range=1m&last=5&token=${apiKey}`
+  $.ajax({
+    url: chartQueryURL,
+    method: "GET"
+  }).then(function (response) {
+    console.log(response)
+    generateChart(response);
+  });
+
 }
 
 function generateNews(data) {
@@ -129,9 +142,45 @@ function generateStock(data) {
   let time = data.quote.closeTime
   closetime.text('Closed: ' + moment(time).format('MMM DD, hh:mmA'))
 
-
   cardBody.append(stockName, stockPrice, primaryExchange, closetime);
+}
 
+function generateChart(data) {
+   var stockName = data.quote.companyName
+   var points = []
+  for (var i = 0; i < data.chart.length; i++) {
+    var day = data.chart[i].date
+    var begin = data.chart[i].open
+    var close = data.chart[i].close
+    var high = data.chart[i].high
+    var low = data.chart[i].low
+
+    points.push([
+      new Date(day),
+      begin,
+      close,
+      high,
+      low
+    ])
+  }
+  var chart = JSC.chart('chartDiv', {
+    debug: true,
+    type: 'line',
+    defaultPoint_marker: {size: 2},
+    legend: {
+      template: '%icon %name',
+      position: 'inside top left'
+    },
+    yAxis_formatString: 'c',
+    xAxis_crosshair_enabled: true,
+
+    series: [
+      {
+        name: stockName,
+        points: points
+      }
+    ]
+  });
 
 }
 
@@ -148,6 +197,8 @@ function generateButtons() {
     stockName.click(function () {
       newsIex(this.dataset.symbol);
       stockIex(this.dataset.symbol);
+      chartIex(this.dataset.symbol);
+
     })
 
     list.append(stockName)
@@ -162,7 +213,10 @@ function search() {
   let searchValue = $('#inputText').val()
   newsIex(searchValue);
   stockIex(searchValue);
+  chartIex(searchValue)
+
 }
+
 
 searchBtn.click(search);
 saveBtn.click(updateArray);
@@ -182,5 +236,6 @@ function updateArray() {
     ticker.splice(ticker.length - 1, 1)
   }
   generateButtons()
+  JSC.Chart('chartDiv', {});
 }
 
