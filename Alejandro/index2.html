@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <!-- Font Awesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+          integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+    <title>Hello, world!</title>
+    <link rel="stylesheet" href="sStyle.css" />
+</head>
+<body>
+<div class="container-fluid">
+    
+    <div class="container" style="padding-top: 13px;">
+    <div class="row">
+        <div class="input-group col-4 mb-3">
+            <input type="text" class="form-control" placeholder="Search stocks..." aria-label="Recipient's username"
+                   id="inputText" style="width:200px">
+                   
+                <button class="offset" type="button" id="searchBtn">Submit</button>
+                    
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4" id="stockButton">
+        </div>
+        <div class="col-8" id="stockInformation">
+            <div class="card" >
+                <div class="card-body" id="stockInfoCard">
+
+                </div>
+                <button class="btn btn-outline-secondary" type="button" id="saveBtn">Save</button>
+
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <table class="table table-hover">
+            <thead>
+            <tr class="row" id="newsPanel">
+                <th class="col-2 d-none d-sm-block">Date</th>
+                <th class="col-3 d-none d-sm-block">Headline</th>
+                <th class="col-7 d-none d-sm-block"> Summary</th>
+
+            <tr class="row">
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!-- JQuery uncompressed -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
+        integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
+        crossorigin="anonymous"></script>
+<script src="./Develop/Script.js"></script>
+<script>
+// Array for button
+// const ticker = ['AAPL', 'MSFT', 'AMZN', 'FB', 'NFLX', 'MCD', 'LMT', 'T', 'KO']
+const ticker = [
+  {
+    name: 'Apple',
+    symbol: 'AAPL',
+  },
+  {
+    name: 'Microsoft',
+    symbol: 'MSFT',
+  },
+  {
+    name: 'Amazon',
+    symbol: 'AMZN',
+  },
+  {
+    name: 'Facebook',
+    symbol: 'FB',
+  },
+  {
+    name: 'Netflix',
+    symbol: 'NFLX',
+  },
+  {
+    name: 'McDonald\'s',
+    symbol: 'MCD',
+  },
+  {
+    name: 'Disney',
+    symbol: 'DIS',
+  },
+  {
+    name: 'AT&T',
+    symbol: 'T',
+  },
+  {
+    name: 'Coco-Cola',
+    symbol: 'KO',
+  },
+
+]
+
+let currentData
+
+// API Key
+
+// const apiKey = 'pk_7f795028e20d4cf2b689fb66874abd4f'
+const apiKey = 'Tsk_45ffeac63611476c81c288bde56d0f59'
+
+const newsCount = 10
+
+//Environments
+// const env = 'cloud'
+const env = 'sandbox'
+
+// pull stock from IEX api
+function stockIex(ticker) {
+  const stockQueryURL = `https://${env}.iexapis.com/stable/stock/${ticker}/book?token=${apiKey}`
+
+  $.ajax({
+    url: stockQueryURL,
+    method: "GET"
+  }).then(function (response) {
+    currentData = response
+    console.log(response);
+    generateStock(response);
+  });
+}
+
+// pull News from IEX Api.
+function newsIex(ticker) {
+  const newsQueryURL = `https://${env}.iexapis.com/stable/stock/${ticker}/news/last/${newsCount}?token=${apiKey}`
+
+  $.ajax({
+    url: newsQueryURL,
+    method: "GET"
+  }).then(function (response) {
+    generateNews(response);
+
+
+  });
+}
+
+function generateNews(data) {
+  data = data.filter(x => x.lang === 'en')
+  console.log(data);
+
+  let tbody = $('tbody')
+  tbody.html('')
+
+  for (i = 0; i < data.length; i++) {
+    let date = moment(data[i].datetime).format('MMM DD, YYYY @ HH:mm:ss');
+    // let time = moment(data[i].datetime).format('HH:mm:ss');
+    let headline = data[i].headline;
+    let summary = data[i].summary;
+    let link = data[i].url;
+
+    //createing elements
+    let tableRow = $('<tr>').addClass('row');
+    let tableDateTime = $('<td>').addClass('col-sm-2 col-12 font-weight-bold').css("color","white");
+    let tableHeadline = $('<td>').addClass('col-sm-3 col-12').css("color","white");
+    let tableHeadlineLink = $('<a>').attr('href', link).attr('target', '_blank').text(headline)
+    let tableSummary = $('<td>').addClass('col-sm-7 col-12').css("color","white");
+    //setting inner text to table
+    tableDateTime.text(date);
+    // tableHeadline.text(headline);
+    tableHeadline.append(tableHeadlineLink)
+    tableSummary.text(summary);
+    //appening to table row
+    tableRow.append(tableDateTime);
+    tableRow.append(tableHeadline);
+    tableRow.append(tableSummary);
+    //append to table body
+    tbody.append(tableRow);
+  }
+}
+
+function generateStock(data) {
+
+  let cardBody = $('#stockInfoCard')
+  cardBody.html('')
+  let stockName = $('<h5>');
+  stockName.text(data.quote.companyName);
+  let stockPrice = $('<h3>');
+  stockPrice.text(data.quote.latestPrice);
+  let primaryExchange = $('<div>');
+  primaryExchange.text('Exchange: ' + data.quote.primaryExchange);
+  let closetime = $('<div>')
+  let time = data.quote.closeTime
+  closetime.text('Closed: ' + moment(time).format('MMM DD, hh:mmA'))
+
+
+  cardBody.append(stockName, stockPrice, primaryExchange, closetime);
+
+
+}
+
+function generateButtons() {
+
+  let divBody = $('#stockButton');
+  divBody.html('')
+  let list = $('<ul>').addClass('list-group list-group-horizontal row');
+  for (let i = 0; i < ticker.length; i++) {
+    let stockName = $('<li>').addClass('list-group-item border-left col-4').css({"background-color": "#f8f8ff","display": "flex", "border-radius":"7px","flex-wrap:":"wrap","height": "50px","margin": "0px 3px 3px 0px","justify-content": "space-around","flex": "0 0 32%"});
+    stockName.text(ticker[i].name);
+    stockName.attr('data-symbol', ticker[i].symbol)
+
+    stockName.click(function () {
+      newsIex(this.dataset.symbol);
+      stockIex(this.dataset.symbol);
+    })
+
+    list.append(stockName)
+  }
+  divBody.append(list)
+}
+
+let searchBtn = $('#searchBtn');
+let saveBtn = $('#saveBtn');
+
+function search() {
+  let searchValue = $('#inputText').val()
+  newsIex(searchValue);
+  stockIex(searchValue);
+}
+
+searchBtn.click(search);
+saveBtn.click(updateArray);
+
+generateButtons();
+
+function updateArray() {
+  let symbol = currentData.quote.symbol
+  let name = currentData.quote.companyName
+  let found = ticker.find(x => symbol === x.symbol);
+  if (found) return
+  found = {}
+  ticker.unshift(found);
+  found.symbol = symbol
+  found.name = name
+  if (ticker.length > 9) {
+    ticker.splice(ticker.length - 1, 1)
+  }
+  generateButtons()
+}
+</script>
+</body>
+</html>
