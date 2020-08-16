@@ -32,7 +32,7 @@ body{
     margin-left: 10px;
     background-color: #2d2e30;
     color: #1fe8b6;
-    border: 1px solid #1fe8b6;
+    border: 1px solid #1fe8b6;padding: .3rem 1rem;
     padding: .3rem 1rem;
     position: relative;
     transition: all .5s;
