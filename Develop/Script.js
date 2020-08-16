@@ -1,44 +1,50 @@
 // Array for button
 // const ticker = ['AAPL', 'MSFT', 'AMZN', 'FB', 'NFLX', 'MCD', 'LMT', 'T', 'KO']
-const ticker = [
-  {
-    name: 'Apple',
-    symbol: 'AAPL',
-  },
-  {
-    name: 'Microsoft',
-    symbol: 'MSFT',
-  },
-  {
-    name: 'Amazon',
-    symbol: 'AMZN',
-  },
-  {
-    name: 'Facebook',
-    symbol: 'FB',
-  },
-  {
-    name: 'Netflix',
-    symbol: 'NFLX',
-  },
-  {
-    name: 'McDonald\'s',
-    symbol: 'MCD',
-  },
-  {
-    name: 'Disney',
-    symbol: 'DIS',
-  },
-  {
-    name: 'AT&T',
-    symbol: 'T',
-  },
-  {
-    name: 'Coco-Cola',
-    symbol: 'KO',
-  },
 
-]
+
+let ticker = JSON.parse(localStorage.getItem('btnArray') ?? 'null');
+if (!ticker) {
+  ticker = [
+    {
+      name: 'Apple',
+      symbol: 'AAPL',
+    },
+    {
+      name: 'Microsoft',
+      symbol: 'MSFT',
+    },
+    {
+      name: 'Amazon',
+      symbol: 'AMZN',
+    },
+    {
+      name: 'Facebook',
+      symbol: 'FB',
+    },
+    {
+      name: 'Netflix',
+      symbol: 'NFLX',
+    },
+    {
+      name: 'McDonald\'s',
+      symbol: 'MCD',
+    },
+    {
+      name: 'Disney',
+      symbol: 'DIS',
+    },
+    {
+      name: 'AT&T',
+      symbol: 'T',
+    },
+    {
+      name: 'Coca-Cola',
+      symbol: 'KO',
+    },
+
+  ]
+}
+
 
 let currentData
 
@@ -47,6 +53,10 @@ let currentData
 // const apiKey = 'pk_7f795028e20d4cf2b689fb66874abd4f'
 // Sandbox
 const apiKey = 'Tsk_45ffeac63611476c81c288bde56d0f59'
+//BarChart Key
+const barChartKey = 'b2cca79db102d031845f0718a36ad9a2'
+// const barChartKey = '247b0fb0737eb61a2ecf9faf065061e6'
+// const barChartKey = 'ab2b64de6529a58b22ffba3b8ceeee0d'
 
 //count
 const newsCount = 10
@@ -87,11 +97,27 @@ function chartIex(ticker) {
   $.ajax({
     url: chartQueryURL,
     method: "GET"
+  }).fail(function(){
+    $('.alert').show()
   }).then(function (response) {
     console.log(response)
     generateChart(response);
   });
 
+}
+
+//Open & Close from BarChart.
+function barChartOpenClose(ticker) {
+  const barChartQueryURL = `https://marketdata.websol.barchart.com/getQuote.json?apikey=${barChartKey}&symbols=${ticker}&fields=fiftyTwoWkHigh%2CfiftyTwoWkHighDate%2CfiftyTwoWkLow%2CfiftyTwoWkLowDate`
+  $.ajax({
+    url: barChartQueryURL,
+    method: "GET"
+  }).then(function (response) {
+    console.log('barchart');
+    console.log(response);
+    barChart(response);
+
+  });
 }
 
 function generateNews(data) {
@@ -131,7 +157,7 @@ function generateNews(data) {
 function generateStock(data) {
 
   let cardBody = $('#stockInfoCard')
-  cardBody.html('')
+
   let stockName = $('<h5>');
   stockName.text(data.quote.companyName);
   let stockPrice = $('<h3>');
@@ -143,11 +169,13 @@ function generateStock(data) {
   closetime.text('Closed: ' + moment(time).format('MMM DD, hh:mmA'))
 
   cardBody.append(stockName, stockPrice, primaryExchange, closetime);
+
+
 }
 
 function generateChart(data) {
-   var stockName = data.quote.companyName
-   var points = []
+  var stockName = data.quote.companyName
+  var points = []
   for (var i = 0; i < data.chart.length; i++) {
     var day = data.chart[i].date
     var begin = data.chart[i].open
@@ -195,10 +223,7 @@ function generateButtons() {
     stockName.attr('data-symbol', ticker[i].symbol)
 
     stockName.click(function () {
-      newsIex(this.dataset.symbol);
-      stockIex(this.dataset.symbol);
-      chartIex(this.dataset.symbol);
-
+      getData(this.dataset.symbol);
     })
 
     list.append(stockName)
@@ -211,10 +236,16 @@ let saveBtn = $('#saveBtn');
 
 function search() {
   let searchValue = $('#inputText').val()
-  newsIex(searchValue);
-  stockIex(searchValue);
-  chartIex(searchValue)
+  getData(searchValue);
+}
 
+function getData(symbol) {
+  $('#stockInfoCard').html('');
+  $('#chartDiv').html('');
+  newsIex(symbol);
+  stockIex(symbol);
+  chartIex(symbol);
+  barChartOpenClose(symbol);
 }
 
 
@@ -232,10 +263,28 @@ function updateArray() {
   ticker.unshift(found);
   found.symbol = symbol
   found.name = name
+
   if (ticker.length > 9) {
     ticker.splice(ticker.length - 1, 1)
   }
   generateButtons()
-  JSC.Chart('chartDiv', {});
+  localStorage.setItem('btnArray', JSON.stringify(ticker));
+
 }
 
+function barChart(data) {
+
+  let cardBody = $('#stockInfoCard')
+  let stockOpen = 'Open: ' + data.results[0].open;
+  let stockClose = 'Close: ' + data.results[0].close;
+  let openStock = $('<div>').addClass('font-weight-bold');
+  openStock.append(stockOpen);
+  let closeStock = $('<div>').addClass('font-weight-bold');
+  closeStock.append(stockClose);
+
+  cardBody.append(openStock, closeStock);
+
+
+}
+
+// JSC.Chart('chartDiv', {});
