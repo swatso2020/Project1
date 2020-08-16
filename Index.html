@@ -11,18 +11,21 @@
     <!-- Font Awesome CDN-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
           integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
-    <title>Hello, world!</title>
+          <link rel="stylesheet" href="./Develop/Style.css"/>
+    <title>Stock Invest-Gator</title>
 </head>
 <body>
+    <div class="header" id="navHeader">Stock Invest-Gator <i class="fas fa-chart-line"></i></div>
+
 <div class="container-fluid">
-    <h1 class>Hello, world!</h1>
+    
     <div class="row">
-        <div class="input-group col-12 col-md-4 mb-3">
+        <div class="input-group col-12 col-md-4 col px-md-7 mb-3">
             <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username"
-                   id="inputText">
-            <div class="input-group-append">
+                   id="inputText" style="width: 45px">
+            
                 <button class="btn btn-outline-secondary" type="button" id="searchBtn">Submit</button>
-            </div>
+            
         </div>
     </div>
     <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
@@ -41,7 +44,7 @@
                     <div class= "col-8" id="chartDiv" style="width:50%; height:300px; margin:0 auto;"></div>
 
                 </div>
-                <button class="btn btn-outline-secondary" type="button" id="saveBtn">Save</button>
+                <button class="btn btn-outline-secondary" type="button" id="saveBtn"><i class="fas fa-save"></i>  Save</button>
 
             </div>
         </div>
@@ -49,7 +52,7 @@
     <div class="col-12">
         <table class="table table-hover">
             <thead>
-            <tr class="row">
+            <tr class="row" id="newsPanel">
                 <th class="col-2 d-none d-sm-block">Date</th>
                 <th class="col-3 d-none d-sm-block">Headline</th>
                 <th class="col-7 d-none d-sm-block"> Summary</th>
@@ -61,6 +64,7 @@
         </table>
     </div>
 </div>
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!-- JQuery uncompressed -->

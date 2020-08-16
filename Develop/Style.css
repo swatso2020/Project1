@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background-color: #2d2e30;
+  font-family: 'Abel', sans-serif;
+}
+#navHeader {
+    font-size: 35px;
+    padding-top: 5px;
+    margin-bottom: 15px;
+    color: #f8f8ff;
+    font-family: 'Sigmar One', cursive;
+}
+#inputText {
+    border-radius: 0px;
+    width: 340px;
+    height:37.5px;
+    border-style: none;
+    background-color: #f8f8ff;
+  }
+  #searchBtn {
+    text-decoration: none;
+    margin-left: 10px;
+    background-color: #2d2e30;
+    color: #1fe8b6;
+    border: 1px solid #1fe8b6;padding: .3rem 1rem;
+    padding: .3rem 1rem;
+    position: relative;
+    transition: all .5s;
+  }
+  #searchBtn::before,
+  #searchBtn::after {
+    content: "";
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    border-style: solid;
+    border-color: #1fe8b6;
+    transition: all .5s;
+  }
+  #searchBtn::before {
+    top: -0.5rem;
+    left: -0.5rem;
+    border-width: 1.5px 0 0 1.5px;
+  
+  }
+  #searchBtn::after {
+    bottom: -0.5rem;
+    right: -0.5rem;
+    border-width: 0 1.5px 1.5px 0;
+  }
+  #searchBtn:hover:before,
+  #searchBtn:hover:after {
+    width: calc(100% + 1rem);
+    height: calc(100% + 1rem);
+    border-color: #fff;
+  }
+  #searchBtn:hover{
+    color: #272838;
+    background-color: #fff;
+    border-color: #fff;
+  } 
+#newsPanel {
+    margin-top: 20px;
+    border: 2px solid black;
+    text-align: left;
+    justify-content: center;
+    color: #fff;
+  }
