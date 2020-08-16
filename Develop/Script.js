@@ -110,10 +110,10 @@ function generateNews(data) {
 
     //createing elements
     let tableRow = $('<tr>').addClass('row');
-    let tableDateTime = $('<td>').addClass('col-sm-2 col-12 font-weight-bold');
-    let tableHeadline = $('<td>').addClass('col-sm-3 col-12');
+    let tableDateTime = $('<td>').addClass('col-sm-2 col-12 font-weight-bold').css("color","white");
+    let tableHeadline = $('<td>').addClass('col-sm-3 col-12').css("color","white");
     let tableHeadlineLink = $('<a>').attr('href', link).attr('target', '_blank').text(headline)
-    let tableSummary = $('<td>').addClass('col-sm-7 col-12');
+    let tableSummary = $('<td>').addClass('col-sm-7 col-12').css("color","white");
     //setting inner text to table
     tableDateTime.text(date);
     // tableHeadline.text(headline);
@@ -190,7 +190,7 @@ function generateButtons() {
   divBody.html('')
   let list = $('<ul>').addClass('list-group list-group-horizontal row');
   for (let i = 0; i < ticker.length; i++) {
-    let stockName = $('<li>').addClass('list-group-item border-left col-4');
+    let stockName = $('<li>').addClass('list-group-item border-left col-4').css({"background-color": "#f8f8ff","display": "flex", "border-radius":"7px","flex-wrap:":"wrap","height": "50px","margin": "0px 3px 3px 0px","justify-content": "space-around","flex": "0 0 32%","cursor": "pointer"});
     stockName.text(ticker[i].name);
     stockName.attr('data-symbol', ticker[i].symbol)
 
