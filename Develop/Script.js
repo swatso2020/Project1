@@ -50,20 +50,20 @@ let currentData
 
 // API Key
 //Prod
-// const apiKey = 'pk_7f795028e20d4cf2b689fb66874abd4f'
+const apiKey = 'pk_7f795028e20d4cf2b689fb66874abd4f'
 // Sandbox
-const apiKey = 'Tsk_45ffeac63611476c81c288bde56d0f59'
+// const apiKey = 'Tsk_45ffeac63611476c81c288bde56d0f59'
 //BarChart Key
-const barChartKey = 'b2cca79db102d031845f0718a36ad9a2'
-// const barChartKey = '247b0fb0737eb61a2ecf9faf065061e6'
+// const barChartKey = 'b2cca79db102d031845f0718a36ad9a2'
+const barChartKey = '247b0fb0737eb61a2ecf9faf065061e6'
 // const barChartKey = 'ab2b64de6529a58b22ffba3b8ceeee0d'
 
 //count
 const newsCount = 10
 
 //Environments
-// const env = 'cloud'
-const env = 'sandbox'
+const env = 'cloud'
+// const env = 'sandbox'
 
 // pull stock from IEX api
 function stockIex(ticker) {
