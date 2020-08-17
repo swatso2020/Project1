@@ -59,7 +59,7 @@ const barChartKey = '247b0fb0737eb61a2ecf9faf065061e6'
 // const barChartKey = 'ab2b64de6529a58b22ffba3b8ceeee0d'
 
 //count
-const newsCount = 10
+const newsCount = 50
 
 //Environments
 const env = 'cloud'
